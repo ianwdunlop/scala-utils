@@ -1,6 +1,6 @@
 # Util
 
-Scala code that could be useful for an project.
+Scala that could be useful for any project.
 
 ## Concurrency
 LimitedExecution and implementations that can wrap functions that return futures and limit the number of
