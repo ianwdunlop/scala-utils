@@ -9,6 +9,8 @@ import scala.concurrent.Future
 
 class SemaphoreLimitedExecutionSpec extends AnyFreeSpec with Matchers {
 
+  private val runFunctionsConcurrently = runConcurrently(waitForAll = false) _
+
   "A SemaphoreLimitedExecution" - {
     "when wrapping a function by default" - {
       "should let at most 1 function run concurrently when concurrency limit is 1" in {

@@ -1,6 +1,7 @@
 package io.mdcatapult.util
 
 import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit.SECONDS
 import java.util.concurrent.atomic.AtomicInteger
 
 import org.scalatest.concurrent.PatienceConfiguration.Timeout
@@ -11,7 +12,7 @@ import scala.concurrent.Future
 
 package object concurrency {
 
-  val concurrentTestTimeout: Timeout = Timeout(Span(10, Seconds))
+  val concurrentTestTimeout: Timeout = Timeout(Span(120, Seconds))
 
   /** Run functions concurrently get return the maximum number of concurrently running functions.
     * It lines up a set of Future by holding them all on a countdown latch until all are ready.  Once there they are all
@@ -22,8 +23,11 @@ package object concurrency {
     * @param f a function of SemaphoreLimitedExecution that is to run a function, such as apply() or weighted()
     * @return a future holding the maximum number of functions that were concurrently running
     */
-  def runFunctionsConcurrently(f: (Int, String) => (Int => Future[Int]) => Future[Int]): Future[Int] = {
-    val latch = new CountDownLatch(10)
+  def runConcurrently(waitForAll: Boolean)(f: (Int, String) => (Int => Future[Int]) => Future[Int]): Future[Int] = {
+    val totalFunctionCount = 10
+
+    val latch = new CountDownLatch(totalFunctionCount)
+    val waitForAllLatch = new CountDownLatch(totalFunctionCount)
 
     val running = new AtomicInteger(0)
 
@@ -34,7 +38,13 @@ package object concurrency {
           Future {
             val currentlyRunningCount = running.incrementAndGet()
 
-            Thread.sleep(150, 0)
+            if (waitForAll) {
+              waitForAllLatch.countDown()
+              waitForAllLatch.await(9, SECONDS)
+            } else {
+              Thread.sleep(150, 0)
+            }
+
             running.decrementAndGet()
 
             currentlyRunningCount
