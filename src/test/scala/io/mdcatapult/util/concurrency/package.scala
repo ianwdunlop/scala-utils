@@ -12,7 +12,7 @@ import scala.concurrent.Future
 
 package object concurrency {
 
-  val concurrentTestTimeout: Timeout = Timeout(Span(10, Seconds))
+  val concurrentTestTimeout: Timeout = Timeout(Span(120, Seconds))
 
   /** Run functions concurrently get return the maximum number of concurrently running functions.
     * It lines up a set of Future by holding them all on a countdown latch until all are ready.  Once there they are all
