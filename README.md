@@ -1,28 +1,21 @@
-# Document Library Common Components
+# Util
 
-Common utilities and components used in the document library
+Scala code that could be useful for an project.
 
-## Bson
-Custom BSON codecs for converting Scala objects to BSON structures
+## Concurrency
+LimitedExecution and implementations that can wrap functions that return futures and limit the number of
+functions that are running.
 
-## Json
-Custom Json converters for converting json to Scala types
-
-## Legacy (deprecated)
-v1 components
-
-## Loader
-file loading utilities (SourceLoader)
-
-## Messages
-Common message structures
+## Hash
+Hashing algorithms for various object types
 
 ## Models
-Common object models
+Notably includes IdIterator for generating a unique sequence of ids.
 
-## Util
-Common utility classes
+## Path
+DirectoryDeleter
 
-* **DoclibFlag** - Object to allow easy checking and manipulatoin of v2 flags
-* **MongoCodecs** - Simple generation of Mongo Codecs based on models in the common library
-* **TargetPath** - Trait to include tooling for the generation of target paths that intersect with the source path
+## Time
+ImplicitOrdering has ordering of LocalDateTime.
+
+Now is a trait that gives the current date time.  AdvancingNow is an implementation useful for testing.
