@@ -1,11 +1,10 @@
 lazy val scala_2_13 = "2.13.3"
 
-lazy val root = (project in file(".")).
-  configs(IntegrationTest)
+lazy val root = (project in file("."))
   .settings(
     Defaults.itSettings,
     name := "util",
-    organization := "io.mdcatapult.doclib",
+    organization := "io.mdcatapult.klein",
     scalaVersion := scala_2_13,
     useCoursier := false,
     crossScalaVersions := scala_2_13 :: Nil,
