@@ -1,24 +1,20 @@
 package io.mdcatapult.util.concurrency
 
-import org.scalatest.concurrent.PatienceConfiguration.Timeout
 import org.scalatest.concurrent.ScalaFutures._
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
-import org.scalatest.time.{Seconds, Span}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class SemaphoreLimitedExecutionSpec extends AnyFreeSpec with Matchers {
 
-  private val concurrentTestTimeout = Timeout(Span(1, Seconds))
-
   "A SemaphoreLimitedExecution" - {
     "when wrapping a function by default" - {
       "should let at most 1 function run concurrently when concurrency limit is 1" in {
         val executor = SemaphoreLimitedExecution.create(1)
 
-        whenReady(runFunctionsConcurrently(executor.apply)) { maxConcurrency =>
+        whenReady(runFunctionsConcurrently(executor.apply), concurrentTestTimeout) { maxConcurrency =>
           maxConcurrency should be(1)
         }
       }
@@ -26,7 +22,7 @@ class SemaphoreLimitedExecutionSpec extends AnyFreeSpec with Matchers {
       "should let at most 2 functions run concurrently when concurrency limit is 2" in {
         val executor = SemaphoreLimitedExecution.create(2)
 
-        whenReady(runFunctionsConcurrently(executor.apply)) { maxConcurrency =>
+        whenReady(runFunctionsConcurrently(executor.apply), concurrentTestTimeout) { maxConcurrency =>
           maxConcurrency should be(2)
         }
       }
@@ -34,7 +30,7 @@ class SemaphoreLimitedExecutionSpec extends AnyFreeSpec with Matchers {
       "should run once concurrency is available" in {
         val executor = SemaphoreLimitedExecution.create(1)
 
-        whenReady(executor("run", "label 1") { x => Future.successful("has " + x) }) {
+        whenReady(executor("run", "label 1") { x => Future.successful("has " + x) }, concurrentTestTimeout) {
           _ should be("has run")
         }
       }
@@ -44,7 +40,7 @@ class SemaphoreLimitedExecutionSpec extends AnyFreeSpec with Matchers {
 
         executor("run", "label 2a") { x => Future.successful("has " + x) }
 
-        whenReady(executor("run later", "label 2b") { x => Future.successful("has " + x) }) {
+        whenReady(executor("run later", "label 2b") { x => Future.successful("has " + x) }, concurrentTestTimeout) {
           _ should be("has run later")
         }
       }
@@ -54,7 +50,7 @@ class SemaphoreLimitedExecutionSpec extends AnyFreeSpec with Matchers {
 
         executor("run", "label 2a") { _ => Future.failed(new RuntimeException("error")) }
 
-        whenReady(executor("run later", "label 2b") { x => Future.successful("has " + x) }) {
+        whenReady(executor("run later", "label 2b") { x => Future.successful("has " + x) }, concurrentTestTimeout) {
           _ should be("has run later")
         }
       }
@@ -65,7 +61,7 @@ class SemaphoreLimitedExecutionSpec extends AnyFreeSpec with Matchers {
       "should let at most 1 function of weight 3 run concurrently when concurrency limit is 3" in {
         val executor = SemaphoreLimitedExecution.create(3)
 
-        whenReady(runFunctionsConcurrently(executor.weighted(3))) { maxConcurrency =>
+        whenReady(runFunctionsConcurrently(executor.weighted(3)), concurrentTestTimeout) { maxConcurrency =>
           maxConcurrency should be(1)
         }
       }
@@ -81,7 +77,7 @@ class SemaphoreLimitedExecutionSpec extends AnyFreeSpec with Matchers {
       "should execute with a weight a function when sufficient concurrency is available" in {
         val executor = SemaphoreLimitedExecution.create(5)
 
-        whenReady(executor.weighted(5)("run", "label 3") { x => Future.successful("has " + x) }) {
+        whenReady(executor.weighted(5)("run", "label 3") { x => Future.successful("has " + x) }, concurrentTestTimeout) {
           _ should be("has run")
         }
       }
@@ -91,7 +87,7 @@ class SemaphoreLimitedExecutionSpec extends AnyFreeSpec with Matchers {
 
         executor.weighted(5)("run", "label 4a") { x => Future.successful("has " + x) }
 
-        whenReady(executor.weighted(5)("run later", "label 4b") { x => Future.successful("has " + x) }) {
+        whenReady(executor.weighted(5)("run later", "label 4b") { x => Future.successful("has " + x) }, concurrentTestTimeout) {
           _ should be("has run later")
         }
       }
@@ -104,7 +100,7 @@ class SemaphoreLimitedExecutionSpec extends AnyFreeSpec with Matchers {
         whenReady(
           executor.unlimited("unlimited", "label 5") { x => {
             executor("run after", "label 5") { y => Future.successful(s"has $y $x") }
-          }}
+          }}, concurrentTestTimeout
         ) {
           _ should be("has run after unlimited")
         }
@@ -116,7 +112,7 @@ class SemaphoreLimitedExecutionSpec extends AnyFreeSpec with Matchers {
         whenReady(
           executor("run", "label") { x => {
             executor.unlimited("no concurrency left", "label") { y => Future.successful(s"has $x with $y") }
-          }}
+          }}, concurrentTestTimeout
         ) {
           _ should be("has run with no concurrency left")
         }
