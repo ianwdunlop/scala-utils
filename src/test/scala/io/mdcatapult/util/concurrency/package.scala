@@ -3,10 +3,15 @@ package io.mdcatapult.util
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.atomic.AtomicInteger
 
+import org.scalatest.concurrent.PatienceConfiguration.Timeout
+import org.scalatest.time.{Seconds, Span}
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 package object concurrency {
+
+  val concurrentTestTimeout: Timeout = Timeout(Span(10, Seconds))
 
   /** Run functions concurrently get return the maximum number of concurrently running functions.
     * It lines up a set of Future by holding them all on a countdown latch until all are ready.  Once there they are all
@@ -29,7 +34,7 @@ package object concurrency {
           Future {
             val currentlyRunningCount = running.incrementAndGet()
 
-            Thread.sleep(1, 0)
+            Thread.sleep(100, 0)
             running.decrementAndGet()
 
             currentlyRunningCount

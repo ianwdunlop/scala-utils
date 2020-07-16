@@ -45,6 +45,7 @@ lazy val root = (project in file(".")).
         "com.typesafe.play" %% "play-json"              % playVersion,
         "io.monix" %% "monix"                           % monixVersion,
         "com.github.pathikrit"  %% "better-files"       % betterFilesVersion,
+        "commons-io" % "commons-io" % "2.7",
       )
     }
   )
