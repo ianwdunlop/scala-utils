@@ -1,5 +1,7 @@
 package io.mdcatapult.util.concurrency
 
+import com.typesafe.scalalogging.LazyLogging
+
 import scala.concurrent.{ExecutionContext, Future}
 
 /** Run a function against some data when there is a need to limit the number of concurrent executions.
@@ -7,7 +9,7 @@ import scala.concurrent.{ExecutionContext, Future}
   * All calls are curried to encourage a style of coding where the function is placed inside {} only
   * and not (), which should look more natural.
   */
-trait LimitedExecution {
+trait LimitedExecution extends LazyLogging {
 
   /** Run function against data with the default level of concurrency.
     *
@@ -37,8 +39,10 @@ trait LimitedExecution {
     * @param c input data
     * @param label message identifying what kind of functionality is being wrapped
     * @param f function that parses the data
-    * @param ec context to run future under - might not required for a simple implementation, but gives some symmetry to the api
     * @return result of applying function to the input data
     */
-  def unlimited[C, T](c: C, label: String)(f: C => Future[T])(implicit ec: ExecutionContext): Future[T]
+  def unlimited[C, T](c: C, label: String)(f: C => Future[T]): Future[T] = {
+    logger.debug("Unlimited execution to run for {}", label)
+    f(c)
+  }
 }
