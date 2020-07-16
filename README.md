@@ -9,6 +9,10 @@ functions that are running.
 ## Hash
 Hashing algorithms for various object types
 
+## IO
+IO-related classes.  Notably the package includes the function `stringToInputStream` that will create an InputStream
+for a string that can greatly aid testing in this area.
+
 ## Models
 Notably includes IdIterator for generating a unique sequence of ids.
 

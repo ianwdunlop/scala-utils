@@ -29,7 +29,7 @@ package object concurrency {
           Future {
             val currentlyRunningCount = running.incrementAndGet()
 
-            Thread.sleep(1, 0)
+            Thread.sleep(10, 0)
             running.decrementAndGet()
 
             currentlyRunningCount
