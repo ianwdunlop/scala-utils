@@ -9,7 +9,7 @@ import scala.concurrent.Future
 
 class UnlimitedLimitedExecutionSpec extends AnyFreeSpec with Matchers {
 
-  "A SemaphoreLimitedExecution" - {
+  "A UnlimitedLimitedExecution" - {
     "when wrapping a function by default" - {
       "should be able to run more than 1 function run concurrently when concurrency limit is 1" in {
         val executor = UnlimitedLimitedExecution.create(1)

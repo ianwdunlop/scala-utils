@@ -23,7 +23,7 @@ package object concurrency {
     * @return a future holding the maximum number of functions that were concurrently running
     */
   def runFunctionsConcurrently(f: (Int, String) => (Int => Future[Int]) => Future[Int]): Future[Int] = {
-    val latch = new CountDownLatch(1000)
+    val latch = new CountDownLatch(25)
 
     val running = new AtomicInteger(0)
 
@@ -34,7 +34,7 @@ package object concurrency {
           Future {
             val currentlyRunningCount = running.incrementAndGet()
 
-            Thread.sleep(1, 0)
+            Thread.sleep(100, 0)
             running.decrementAndGet()
 
             currentlyRunningCount
