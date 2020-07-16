@@ -53,10 +53,4 @@ class SemaphoreLimitedExecution private (s: AsyncSemaphore) extends LimitedExecu
       }
     }
   }
-
-  /** @inheritdoc */
-  override def unlimited[C, T](c: C, label: String)(f: C => Future[T])(implicit ec: ExecutionContext): Future[T] = {
-    logger.debug("Unlimited execution to run for {}", label)
-    f(c)
-  }
 }
