@@ -36,7 +36,7 @@ class JsonEncoderSpec extends AnyWordSpec with Matchers with MockitoSugar {
   "Json-encoded message" should {
     "contain all required fields" in {
 
-      val jsonEncoder = new JsonEncoder("test-queue", """{"key": "value"}""")
+      val jsonEncoder = new JsonEncoder()
       val event       = mock[ILoggingEvent]
 
       when(event.getTimeStamp).thenReturn(1)
@@ -44,7 +44,10 @@ class JsonEncoderSpec extends AnyWordSpec with Matchers with MockitoSugar {
       when(event.getThreadName).thenReturn("my-thread")
       when(event.getFormattedMessage).thenReturn("my-message")
       when(event.getLoggerName).thenReturn("logger-name")
-      when(event.getMDCPropertyMap).thenReturn(Map("myMdcProperty" -> "myMdcValue").asJava)
+      when(event.getMDCPropertyMap).thenReturn(Map("myMdcProperty" -> "myMdcValue", "queue" -> "test-queue", "original-message" -> """{"key": "value"}""").asJava)
+
+//      MDC.put("queue", "test-queue")
+//      MDC.put("originalMessage", """{"key": "value"}""")
 
       val testException = new Exception("test-exception")
       val stringWriter  = new StringWriter()
@@ -73,8 +76,7 @@ class JsonEncoderSpec extends AnyWordSpec with Matchers with MockitoSugar {
       (resultAsJson \ "mykey").asString         shouldBe "myValue"
       (resultAsJson \ "mymdcproperty").asString shouldBe "myMdcValue"
       (resultAsJson \ "queue").asString shouldBe "test-queue"
-      (resultAsJson \ "mymdcproperty").asString shouldBe "myMdcValue"
-      (resultAsJson \ "originalMessage").asString shouldBe """{"key": "value"}"""
+      (resultAsJson \ "original-message").asString shouldBe """{"key": "value"}"""
     }
   }
 

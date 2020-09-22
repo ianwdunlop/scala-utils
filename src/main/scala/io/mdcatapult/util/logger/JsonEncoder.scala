@@ -29,11 +29,7 @@ import org.apache.commons.lang3.time.FastDateFormat
 import scala.jdk.CollectionConverters._
 import scala.util.{Success, Try}
 
-object JsonEncoder {
-  def apply(originalMessage: String, queue: String): JsonEncoder = JsonEncoder(originalMessage, queue)
-}
-
-class JsonEncoder(var queue: String, var originalMessage: String) extends EncoderBase[ILoggingEvent] {
+class JsonEncoder() extends EncoderBase[ILoggingEvent] {
 
   private val mapper = new ObjectMapper().configure(JsonWriteFeature.ESCAPE_NON_ASCII.mappedFeature(), true)
 
@@ -65,8 +61,6 @@ class JsonEncoder(var queue: String, var originalMessage: String) extends Encode
     eventNode.put("logger", event.getLoggerName)
     eventNode.put("thread", event.getThreadName)
     eventNode.put("level", event.getLevel.toString)
-    eventNode.put("queue", queue)
-    eventNode.put("originalMessage", originalMessage)
 
     Option(getContext).foreach(c =>
       c.getCopyOfPropertyMap.asScala foreach { case (k, v) => eventNode.put(k.toLowerCase, v) })
