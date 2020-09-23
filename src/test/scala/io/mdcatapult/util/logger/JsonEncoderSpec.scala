@@ -46,9 +46,6 @@ class JsonEncoderSpec extends AnyWordSpec with Matchers with MockitoSugar {
       when(event.getLoggerName).thenReturn("logger-name")
       when(event.getMDCPropertyMap).thenReturn(Map("myMdcProperty" -> "myMdcValue", "queue" -> "test-queue", "original-message" -> """{"key": "value"}""").asJava)
 
-//      MDC.put("queue", "test-queue")
-//      MDC.put("originalMessage", """{"key": "value"}""")
-
       val testException = new Exception("test-exception")
       val stringWriter  = new StringWriter()
       testException.printStackTrace(new PrintWriter(stringWriter))
