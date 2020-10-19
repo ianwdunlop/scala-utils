@@ -39,12 +39,16 @@ lazy val root = (project in file("."))
         "org.scalatest" %% "scalatest"                  % "3.2.0" % Test,
         "org.scalamock" %% "scalamock"                  % "4.4.0" % Test,
         "org.scalacheck" %% "scalacheck"                % "1.14.3" % Test,
+        "org.mockito" % "mockito-core"                  % "3.3.3"    % Test,
+        "org.scalatestplus" %% "mockito-3-3"            % "3.2.2.0" % Test,
         "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2",
         "com.typesafe" % "config"                       % configVersion,
         "com.typesafe.play" %% "play-json"              % playVersion,
         "io.monix" %% "monix"                           % monixVersion,
         "com.github.pathikrit"  %% "better-files"       % betterFilesVersion,
-        "commons-io" % "commons-io" % "2.7",
+        "commons-io" % "commons-io"                     % "2.7",
+        "ch.qos.logback" % "logback-classic"            % "1.2.3",
+        "org.apache.commons" % "commons-lang3"          % "3.9"
       )
     }
   )
