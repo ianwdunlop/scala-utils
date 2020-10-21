@@ -33,6 +33,7 @@ lazy val root = (project in file("."))
       val configVersion = "1.3.2"
       val monixVersion = "3.2.2"
       val playVersion = "2.9.0"
+      val prometheusClientVersion = "0.9.0"
 
       Seq(
         "org.scalactic" %% "scalactic"                  % "3.2.0" % Test,
@@ -45,6 +46,9 @@ lazy val root = (project in file("."))
         "io.monix" %% "monix"                           % monixVersion,
         "com.github.pathikrit"  %% "better-files"       % betterFilesVersion,
         "commons-io" % "commons-io" % "2.7",
+        "io.prometheus" % "simpleclient" % prometheusClientVersion,
+        "io.prometheus" % "simpleclient_hotspot" % prometheusClientVersion,
+        "io.prometheus" % "simpleclient_httpserver" % prometheusClientVersion
       )
     }
   )
