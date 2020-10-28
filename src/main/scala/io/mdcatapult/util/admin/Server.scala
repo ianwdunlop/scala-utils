@@ -22,7 +22,6 @@ class Server(config: Config, checkHealth: () => Boolean) {
     DefaultExports.initialize()
     val port = config.getInt("admin.port")
     address = s"http://${address}:9090"
-    println(address)
     val addr = new InetSocketAddress(port)
     val srv = HttpServer.create(addr, 3)
     val healthCheckHandler = new HTTPHealthCheckHandler(checkHealth)

@@ -15,19 +15,20 @@ class AdminServerSpec extends AnyFreeSpec with Matchers {
   private val adminServer: Server = Server(config)
   private val f = Future {
     adminServer.start()
-    Thread.sleep(5000)
-    adminServer.stop()
   }
+
   def get(url: String) = scala.io.Source.fromURL(url).mkString
 
-  "An admin server" - {
-    "when initialised without a healthcheck" - {
-      "should return \"OK\"" in {
-        val res = get(s"${adminServer.address}/health")
-        res should be("\"OK\"")
+  f.onComplete( _ => {
+    "An admin server" - {
+      "when initialised without a healthcheck" - {
+        "should return \"OK\"" in {
+          val res = get(s"${adminServer.address}/health")
+          res should be("\"OK\"")
+        }
       }
     }
-  }
 
-  f.onComplete( _ => {})
+    adminServer.stop()
+  })
 }
