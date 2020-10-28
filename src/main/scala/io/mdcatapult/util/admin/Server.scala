@@ -13,6 +13,7 @@ object Server {
 }
 
 class Server(config: Config, checkHealth: () => Boolean) {
+  private var server: HTTPServer = _
 
   def start(): Unit = {
     val port = config.getInt("admin.port")
@@ -21,6 +22,10 @@ class Server(config: Config, checkHealth: () => Boolean) {
     val healthCheckHandler = new HTTPHealthCheckHandler(checkHealth)
     srv.createContext("/health", healthCheckHandler)
     val reg = CollectorRegistry.defaultRegistry
-    new HTTPServer(srv, reg, false)
+    server = new HTTPServer(srv, reg, false)
+  }
+
+  def stop(): Unit = {
+    server.stop()
   }
 }
