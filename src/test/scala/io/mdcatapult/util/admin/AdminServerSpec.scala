@@ -23,7 +23,7 @@ class AdminServerSpec extends AnyFreeSpec with Matchers {
   "An admin server" - {
     "when initialised without a healthcheck" - {
       "should return \"OK\"" in {
-        val res = get(s"http://${adminServer.address}:9090/health")
+        val res = get(s"${adminServer.address}/health")
         res should be("\"OK\"")
       }
     }
