@@ -7,6 +7,7 @@ import com.typesafe.config.Config
 import io.prometheus.client.CollectorRegistry
 import io.prometheus.client.exporter.HTTPServer
 import io.prometheus.client.hotspot.DefaultExports
+import java.net._
 
 object Server {
   def apply(config: Config, checkHealth: () => Boolean) = new Server(config, checkHealth)
@@ -15,6 +16,7 @@ object Server {
 
 class Server(config: Config, checkHealth: () => Boolean) {
   private var server: HTTPServer = _
+  var address: String = InetAddress.getLocalHost.getHostAddress
 
   def start(): Unit = {
     DefaultExports.initialize()
