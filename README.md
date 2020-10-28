@@ -30,3 +30,19 @@ import io.mdcatapult.util.time.nowUtc
 val currentTime = nowUtc.now()
 val time: Now = () => currentTime
 ```
+
+## Logging
+Includes an implementation of [HMRC's logback json logger](https://github.com/hmrc/logback-json-logger) licenced under [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0).  
+Build was unavailable for scala 2.13 so code is included directly. To use it add the class to your logback.xml file.
+```xml
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="io.mdcatapult.util.logger.JsonEncoder"/>
+    </appender>
+```
+To add arbitrary fields to the log output you need to use Logback [Mapped Diagnostic Contexts](http://logback.qos.ch/manual/mdc.html).
+```scala
+import org.slf4j.MDC
+MDC.put("a-message", "my message")
+MDC.put("another-message", """"{"a-key": "a-value"}"""")
+```
+You can add these fields at any time before you output the log message.
