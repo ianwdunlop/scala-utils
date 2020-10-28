@@ -6,6 +6,7 @@ import com.sun.net.httpserver.HttpServer
 import com.typesafe.config.Config
 import io.prometheus.client.CollectorRegistry
 import io.prometheus.client.exporter.HTTPServer
+import io.prometheus.client.hotspot.DefaultExports
 
 object Server {
   def apply(config: Config, checkHealth: () => Boolean) = new Server(config, checkHealth)
@@ -16,6 +17,7 @@ class Server(config: Config, checkHealth: () => Boolean) {
   private var server: HTTPServer = _
 
   def start(): Unit = {
+    DefaultExports.initialize()
     val port = config.getInt("admin.port")
     val addr = new InetSocketAddress(port)
     val srv = HttpServer.create(addr, 3)
