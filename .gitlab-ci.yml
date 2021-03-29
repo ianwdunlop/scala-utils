@@ -3,7 +3,7 @@ stages:
   - publish
 
 default:
-  image: registry.mdcatapult.io/informatics/docker-images/ci:scala
+  image: registry.mdcatapult.io/informatics/docker-images/ci/scala
 
 test:
   stage: test
