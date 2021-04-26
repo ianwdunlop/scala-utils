@@ -15,17 +15,15 @@
  */
 package io.mdcatapult.util.logger
 
-import java.net.InetAddress
-import java.nio.charset.StandardCharsets
-
 import ch.qos.logback.classic.spi.{ILoggingEvent, ThrowableProxyUtil}
 import ch.qos.logback.core.encoder.EncoderBase
 import com.fasterxml.jackson.core.json.JsonWriteFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.typesafe.config.ConfigFactory
-import org.apache.commons.io.IOUtils._
 import org.apache.commons.lang3.time.FastDateFormat
 
+import java.net.InetAddress
+import java.nio.charset.StandardCharsets
 import scala.jdk.CollectionConverters._
 import scala.util.{Success, Try}
 
@@ -34,7 +32,7 @@ class JsonEncoder() extends EncoderBase[ILoggingEvent] {
   private val mapper = new ObjectMapper().configure(JsonWriteFeature.ESCAPE_NON_ASCII.mappedFeature(), true)
 
   lazy val appName: String = Try { ConfigFactory.load().getString("appName") } match {
-    case Success(name) => name.toString
+    case Success(name) => name
     case _             => "APP NAME NOT SET"
   }
 
@@ -42,7 +40,7 @@ class JsonEncoder() extends EncoderBase[ILoggingEvent] {
 
   private lazy val dateFormat = {
     val dformat = Try { ConfigFactory.load().getString("logger.json.dateformat") } match {
-      case Success(date) => date.toString
+      case Success(date) => date
       case _             => DATE_FORMAT
     }
     FastDateFormat.getInstance(dformat)
@@ -66,13 +64,13 @@ class JsonEncoder() extends EncoderBase[ILoggingEvent] {
       c.getCopyOfPropertyMap.asScala foreach { case (k, v) => eventNode.put(k.toLowerCase, v) })
     event.getMDCPropertyMap.asScala foreach { case (k, v) => eventNode.put(k.toLowerCase, v) }
 
-    s"${mapper.writeValueAsString(eventNode)}$LINE_SEPARATOR".getBytes(StandardCharsets.UTF_8)
+    s"${mapper.writeValueAsString(eventNode)}${System.lineSeparator()}".getBytes(StandardCharsets.UTF_8)
   }
 
   override def footerBytes(): Array[Byte] =
-    LINE_SEPARATOR.getBytes(StandardCharsets.UTF_8)
+    System.lineSeparator().getBytes(StandardCharsets.UTF_8)
 
   override def headerBytes(): Array[Byte] =
-    LINE_SEPARATOR.getBytes(StandardCharsets.UTF_8)
+    System.lineSeparator().getBytes(StandardCharsets.UTF_8)
 
 }
