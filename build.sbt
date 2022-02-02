@@ -1,5 +1,11 @@
 lazy val scala_2_13 = "2.13.3"
 
+lazy val configVersion = "1.4.1"
+lazy val playVersion = "2.9.0"
+lazy val betterFilesVersion = "3.9.1"
+lazy val prometheusClientVersion = "0.9.0"
+lazy val scalacticVersion = "3.2.10"
+
 lazy val root = (project in file("."))
   .settings(
     Defaults.itSettings,
@@ -29,19 +35,18 @@ lazy val root = (project in file("."))
       }
     },
     libraryDependencies ++= {
-      val prometheusClientVersion = "0.9.0"
       Seq(
-        "org.scalactic" %% "scalactic"                  % "3.2.0" % Test,
+        "org.scalactic" %% "scalactic"                  % scalacticVersion % Test,
         "org.scalatest" %% "scalatest"                  % "3.2.0" % Test,
         "org.scalamock" %% "scalamock"                  % "4.4.0" % Test,
         "org.scalacheck" %% "scalacheck"                % "1.14.3" % Test,
         "org.mockito" % "mockito-core"                  % "3.3.3"    % Test,
         "org.scalatestplus" %% "mockito-3-3"            % "3.2.2.0" % Test,
         "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2",
-        "com.typesafe" % "config"                       % "1.3.2",
-        "com.typesafe.play" %% "play-json"              % "2.9.0",
+        "com.typesafe" % "config"                       % configVersion,
+        "com.typesafe.play" %% "play-json"              % playVersion,
         "io.monix" %% "monix"                           % "3.2.2",
-        "com.github.pathikrit"  %% "better-files"       % "3.9.1",
+        "com.github.pathikrit"  %% "better-files"       % betterFilesVersion,
         "commons-io" % "commons-io"                     % "2.7",
         "io.prometheus" % "simpleclient"                % prometheusClientVersion,
         "io.prometheus" % "simpleclient_hotspot"        % prometheusClientVersion,
