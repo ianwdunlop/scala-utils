@@ -46,3 +46,13 @@ MDC.put("a-message", "my message")
 MDC.put("another-message", """"{"a-key": "a-value"}"""")
 ```
 You can add these fields at any time before you output the log message.
+
+## Dependency Scanning
+
+https://github.com/albuch/sbt-dependency-check
+
+The sbt-dependency-check plugin can be used to create a HTML report under `target/scala-x.x/dependency-check-report.html`
+
+```bash
+sbt dependencyCheck
+```
