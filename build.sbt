@@ -1,15 +1,5 @@
 lazy val scala_2_13 = "2.13.3"
 
-lazy val configVersion = "1.4.1"
-lazy val playVersion = "2.9.0"
-lazy val betterFilesVersion = "3.9.1"
-lazy val prometheusClientVersion = "0.9.0"
-lazy val scalacticVersion = "3.2.10"
-lazy val scalaLoggingVersion = "3.9.4"
-lazy val logbackClassicVersion = "1.2.10"
-lazy val commonsIOVersion = "2.11.0"
-lazy val monixVersion = "3.4.0"
-
 lazy val root = (project in file("."))
   .settings(
     Defaults.itSettings,
@@ -39,24 +29,43 @@ lazy val root = (project in file("."))
       }
     },
     libraryDependencies ++= {
+      val configVersion = "1.4.1"
+      val playVersion = "2.9.0"
+      val betterFilesVersion = "3.9.1"
+      val prometheusClientVersion = "0.9.0"
+      val scalacticVersion = "3.2.10"
+      val scalaLoggingVersion = "3.9.4"
+      val logbackClassicVersion = "1.2.10"
+      val commonsIOVersion = "2.11.0"
+      val monixVersion = "3.4.0"
+      val commonsLangVersion = "3.12.0"
+      val scalaTestVersion = "3.2.11"
+      val scalaMockVersion = "5.2.0"
+      // Don't forget to match the org.scalatestplus artifact with the mockito version
+      // If you change the mockito version you need to match the scalatestplus group ie org.scalatestplus.mockito-4-2 is for mockito-core 4.2.x
+      val mockitoVersion = "4.2.0"
+      val scalaTestPlusMockitoArtifact = "mockito-4-2"
+      val scalaTestPlusMockitoVersion = "3.2.11.0"
+      val scalaCheckVersion = "1.15.4"
+
       Seq(
-        "org.scalactic" %% "scalactic"                  % scalacticVersion % Test,
-        "org.scalatest" %% "scalatest"                  % "3.2.0" % Test,
-        "org.scalamock" %% "scalamock"                  % "4.4.0" % Test,
-        "org.scalacheck" %% "scalacheck"                % "1.14.3" % Test,
-        "org.mockito" % "mockito-core"                  % "3.3.3"    % Test,
-        "org.scalatestplus" %% "mockito-3-3"            % "3.2.2.0" % Test,
-        "com.typesafe.scala-logging" %% "scala-logging" % scalaLoggingVersion,
-        "com.typesafe" % "config"                       % configVersion,
-        "com.typesafe.play" %% "play-json"              % playVersion,
-        "io.monix" %% "monix"                           % monixVersion,
-        "com.github.pathikrit"  %% "better-files"       % betterFilesVersion,
-        "commons-io" % "commons-io"                     % commonsIOVersion,
-        "io.prometheus" % "simpleclient"                % prometheusClientVersion,
-        "io.prometheus" % "simpleclient_hotspot"        % prometheusClientVersion,
-        "io.prometheus" % "simpleclient_httpserver"     % prometheusClientVersion,
-        "ch.qos.logback" % "logback-classic"            % logbackClassicVersion,
-        "org.apache.commons" % "commons-lang3"          % "3.9"
+        "org.scalactic" %% "scalactic"                       % scalacticVersion % Test,
+        "org.scalatest" %% "scalatest"                       % scalaTestVersion % Test,
+        "org.scalamock" %% "scalamock"                       % scalaMockVersion % Test,
+        "org.scalacheck" %% "scalacheck"                     % scalaCheckVersion % Test,
+        "org.mockito" % "mockito-core"                       % mockitoVersion % Test,
+        "org.scalatestplus" %% scalaTestPlusMockitoArtifact  % scalaTestPlusMockitoVersion % Test,
+        "com.typesafe.scala-logging" %% "scala-logging"      % scalaLoggingVersion,
+        "com.typesafe" % "config"                            % configVersion,
+        "com.typesafe.play" %% "play-json"                   % playVersion,
+        "io.monix" %% "monix"                                % monixVersion,
+        "com.github.pathikrit"  %% "better-files"            % betterFilesVersion,
+        "commons-io" % "commons-io"                          % commonsIOVersion,
+        "io.prometheus" % "simpleclient"                     % prometheusClientVersion,
+        "io.prometheus" % "simpleclient_hotspot"             % prometheusClientVersion,
+        "io.prometheus" % "simpleclient_httpserver"          % prometheusClientVersion,
+        "ch.qos.logback" % "logback-classic"                 % logbackClassicVersion,
+        "org.apache.commons" % "commons-lang3"               % commonsLangVersion
       )
     }
   )
