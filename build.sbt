@@ -7,6 +7,8 @@ lazy val prometheusClientVersion = "0.9.0"
 lazy val scalacticVersion = "3.2.10"
 lazy val scalaLoggingVersion = "3.9.4"
 lazy val logbackClassicVersion = "1.2.10"
+lazy val commonsIOVersion = "2.11.0"
+lazy val monixVersion = "3.4.0"
 
 lazy val root = (project in file("."))
   .settings(
@@ -47,9 +49,9 @@ lazy val root = (project in file("."))
         "com.typesafe.scala-logging" %% "scala-logging" % scalaLoggingVersion,
         "com.typesafe" % "config"                       % configVersion,
         "com.typesafe.play" %% "play-json"              % playVersion,
-        "io.monix" %% "monix"                           % "3.2.2",
+        "io.monix" %% "monix"                           % monixVersion,
         "com.github.pathikrit"  %% "better-files"       % betterFilesVersion,
-        "commons-io" % "commons-io"                     % "2.11.0",
+        "commons-io" % "commons-io"                     % commonsIOVersion,
         "io.prometheus" % "simpleclient"                % prometheusClientVersion,
         "io.prometheus" % "simpleclient_hotspot"        % prometheusClientVersion,
         "io.prometheus" % "simpleclient_httpserver"     % prometheusClientVersion,
