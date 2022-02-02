@@ -30,7 +30,7 @@ lazy val root = (project in file("."))
     },
     libraryDependencies ++= {
       val configVersion = "1.4.1"
-      val playVersion = "2.9.0"
+      val playVersion = "2.9.2"
       val betterFilesVersion = "3.9.1"
       val prometheusClientVersion = "0.9.0"
       val scalacticVersion = "3.2.10"
