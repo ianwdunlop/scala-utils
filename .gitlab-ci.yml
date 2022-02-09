@@ -7,6 +7,8 @@ default:
 
 test:
   stage: test
+  tags:
+    - wopr
   script:
     - sbt +clean coverage +test coverageReport
   except:
@@ -15,6 +17,8 @@ test:
 
 publish-snapshot:
   stage: publish
+  tags:
+    - wopr
   script:
     - sbt +publish
   only:
@@ -25,6 +29,8 @@ publish-snapshot:
 
 release-master:
   stage: publish
+  tags:
+    - wopr
   script:
     - /scripts/release.sh -b -r develop
   only:
