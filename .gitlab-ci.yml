@@ -3,8 +3,7 @@ stages:
   - publish
 
 default:
-  image: registry.gitlab.com/medicines-discovery-catapult/informatics/docker-images/ci/sbt:ian-add-sbt
-#  image: registry.gitlab.com/medicines-discovery-catapult/informatics/docker-images/ci/sbt:latest
+  image: registry.gitlab.com/medicines-discovery-catapult/informatics/docker-images/ci/sbt:latest
 
 test:
   stage: test
