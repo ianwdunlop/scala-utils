@@ -1,6 +1,6 @@
 # Util
 
-Scala that could be useful for any project.
+Various bits of Scala that could be useful for any project.
 
 ## Concurrency
 LimitedExecution and implementations that can wrap functions that return futures and limit the number of
@@ -56,3 +56,7 @@ The sbt-dependency-check plugin can be used to create a HTML report under `targe
 ```bash
 sbt dependencyCheck
 ```
+
+## Package Deployment
+Uses [sbt-gitlab](https://github.com/gilcloud/sbt-gitlab/tree/master) to publish to the gitlab package registry. The group & package
+id is set in the build.sbt file.
