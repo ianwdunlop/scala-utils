@@ -1,3 +1,8 @@
+import com.gilcloud.sbt.gitlab.{GitlabCredentials,GitlabPlugin}
+
+GitlabPlugin.autoImport.gitlabGroupId     :=  Some(73679838)
+GitlabPlugin.autoImport.gitlabProjectId   :=  Some(50550924)
+
 lazy val scala_2_13 = "2.13.3"
 
 lazy val root = (project in file("."))
