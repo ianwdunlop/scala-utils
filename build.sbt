@@ -55,6 +55,7 @@ lazy val root = (project in file("."))
     publishTo := {
       Some("gitlab" at s"https://gitlab.com/api/v4/projects/$registryId/packages/maven")
     },
+    credentials += creds,
     libraryDependencies ++= {
       Seq(
         "org.scalactic" %% "scalactic"                       % scalacticVersion % Test,
