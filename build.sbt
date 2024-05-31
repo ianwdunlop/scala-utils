@@ -49,6 +49,7 @@ lazy val root = (project in file("."))
       "-Xlint",
       "-Xfatal-warnings",
     ),
+    releaseIgnoreUntrackedFiles := true,
     resolvers ++= Seq(
       "gitlab" at s"https://gitlab.com/api/v4/projects/$registryId/packages/maven",
       "Maven Public" at "https://repo1.maven.org/maven2"),
