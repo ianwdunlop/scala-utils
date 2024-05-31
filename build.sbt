@@ -1,13 +1,40 @@
-import com.gilcloud.sbt.gitlab.{GitlabCredentials,GitlabPlugin}
+import scala.collection.Seq
 
-GitlabPlugin.autoImport.gitlabGroupId     :=  Some(73679838)
-GitlabPlugin.autoImport.gitlabProjectId   :=  Some(50550924)
+lazy val creds = {
+  sys.env.get("CI_JOB_TOKEN") match {
+    case Some(token) =>
+      Credentials("GitLab Packages Registry", "gitlab.com", "gitlab-ci-token", token)
+    case _ =>
+      Credentials(Path.userHome / ".sbt" / ".credentials")
+  }
+}
 
-lazy val scala_2_13 = "2.13.3"
+// Registry ID is the project ID of the project where the package is published, this should be set in the CI/CD environment
+val registryId = sys.env.get("REGISTRY_HOST_PROJECT_ID").getOrElse("")
+
+lazy val scala_2_13 = "2.13.14"
+
+val configVersion = "1.4.3"
+val playVersion = "3.0.2"
+val betterFilesVersion = "3.9.2"
+val prometheusClientVersion = "0.9.0"
+val scalacticVersion = "3.2.18"
+val scalaLoggingVersion = "3.9.5"
+val logbackClassicVersion = "1.5.6"
+val commonsIOVersion = "2.16.1"
+val monixVersion = "3.4.1"
+val commonsLangVersion = "3.14.0"
+val scalaTestVersion = "3.2.18"
+val scalaMockVersion = "6.0.0"
+// Don't forget to match the org.scalatestplus artifact with the mockito version
+// If you change the mockito version you need to match the scalatestplus group ie org.scalatestplus.mockito-4-2 is for mockito-core 4.2.x
+val mockitoVersion = "5.11.0"
+val scalaTestPlusMockitoArtifact = "mockito-4-2"
+val scalaTestPlusMockitoVersion = "3.2.11.0"
+val scalaCheckVersion = "1.18.0"
 
 lazy val root = (project in file("."))
   .settings(
-    Defaults.itSettings,
     name := "util",
     organization := "io.mdcatapult.klein",
     scalaVersion := scala_2_13,
@@ -22,39 +49,13 @@ lazy val root = (project in file("."))
       "-Xlint",
       "-Xfatal-warnings",
     ),
-    resolvers += ("gitlab" at "https://gitlab.com/api/v4/projects/50550924/packages/maven"),
-    credentials += Credentials("GitLab Packages Registry", "gitlab.com", "Job-Token", sys.env.get("CI_JOB_TOKEN").get),
-//    resolvers         ++= Seq(
-//      "MDC Nexus Releases" at "https://nexus.wopr.inf.mdc/repository/maven-releases/",
-//      "MDC Nexus Snapshots" at "https://nexus.wopr.inf.mdc/repository/maven-snapshots/"),
-//    credentials       += {
-//      sys.env.get("NEXUS_PASSWORD") match {
-//        case Some(p) =>
-//          Credentials("Sonatype Nexus Repository Manager", "nexus.wopr.inf.mdc", "gitlab", p)
-//        case None =>
-//          Credentials(Path.userHome / ".sbt" / ".credentials")
-//      }
-//    },
+    resolvers ++= Seq(
+      "gitlab" at s"https://gitlab.com/api/v4/projects/$registryId/packages/maven",
+      "Maven Public" at "https://repo1.maven.org/maven2"),
+    publishTo := {
+      Some("gitlab" at s"https://gitlab.com/api/v4/projects/$registryId/packages/maven")
+    },
     libraryDependencies ++= {
-      val configVersion = "1.4.1"
-      val playVersion = "2.9.2"
-      val betterFilesVersion = "3.9.1"
-      val prometheusClientVersion = "0.9.0"
-      val scalacticVersion = "3.2.10"
-      val scalaLoggingVersion = "3.9.4"
-      val logbackClassicVersion = "1.2.10"
-      val commonsIOVersion = "2.11.0"
-      val monixVersion = "3.4.0"
-      val commonsLangVersion = "3.12.0"
-      val scalaTestVersion = "3.2.11"
-      val scalaMockVersion = "5.2.0"
-      // Don't forget to match the org.scalatestplus artifact with the mockito version
-      // If you change the mockito version you need to match the scalatestplus group ie org.scalatestplus.mockito-4-2 is for mockito-core 4.2.x
-      val mockitoVersion = "4.2.0"
-      val scalaTestPlusMockitoArtifact = "mockito-4-2"
-      val scalaTestPlusMockitoVersion = "3.2.11.0"
-      val scalaCheckVersion = "1.15.4"
-
       Seq(
         "org.scalactic" %% "scalactic"                       % scalacticVersion % Test,
         "org.scalatest" %% "scalatest"                       % scalaTestVersion % Test,
@@ -64,7 +65,7 @@ lazy val root = (project in file("."))
         "org.scalatestplus" %% scalaTestPlusMockitoArtifact  % scalaTestPlusMockitoVersion % Test,
         "com.typesafe.scala-logging" %% "scala-logging"      % scalaLoggingVersion,
         "com.typesafe" % "config"                            % configVersion,
-        "com.typesafe.play" %% "play-json"                   % playVersion,
+        "org.playframework" %% "play-json"                   % playVersion,
         "io.monix" %% "monix"                                % monixVersion,
         "com.github.pathikrit"  %% "better-files"            % betterFilesVersion,
         "commons-io" % "commons-io"                          % commonsIOVersion,
@@ -76,14 +77,3 @@ lazy val root = (project in file("."))
       )
     }
   )
-//  .settings(
-//    publishSettings: _*
-//  )
-//
-//lazy val publishSettings = Seq(
-//  publishTo := {
-//    val version = if (isSnapshot.value) "snapshots" else "releases"
-//    Some("MDC Maven Repo" at s"https://nexus.wopr.inf.mdc/repository/maven-$version/")
-//  },
-//  credentials += Credentials(Path.userHome / ".sbt" / ".credentials")
-//)
