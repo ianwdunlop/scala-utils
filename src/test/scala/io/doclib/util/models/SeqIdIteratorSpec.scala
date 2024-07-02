@@ -32,7 +32,7 @@ class SeqIdIteratorSpec extends AnyFreeSpec with Matchers {
       }
     }
 
-    "when a refreshed copy after some value have bee iterated through" - {
+    "when a refreshed copy after some value have been iterated through" - {
       val iter = new SeqIdIterator(IndexedSeq("first", "second", "third", "fourth", "fifth"))
 
       iter.next() should be ("first")
