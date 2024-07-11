@@ -45,6 +45,8 @@ lazy val root = (project in file("."))
       "-Xfatal-warnings",
     ),
     releaseIgnoreUntrackedFiles := true,
+    githubOwner := sys.env.getOrElse("GITHUB_USERNAME", ""),
+    githubRepository := sys.env.getOrElse("GITHUB_PACKAGE_REPO", "scala-packages"),
     libraryDependencies ++= {
       Seq(
         "org.scalactic" %% "scalactic"                       % scalacticVersion % Test,
