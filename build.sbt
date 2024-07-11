@@ -2,6 +2,8 @@ import scala.collection.Seq
 
 lazy val scala_2_13 = "2.13.14"
 
+ThisBuild / versionScheme := Some("early-semver")
+
 val configVersion = "1.4.3"
 val playVersion = "3.0.4"
 val betterFilesVersion = "3.9.2"
