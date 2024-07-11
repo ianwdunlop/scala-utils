@@ -127,7 +127,7 @@ sbt dependencyCheck
 
 ## Publishing the package
 Uses the sbt plugin [sbt-github-packages](https://github.com/djspiewak/sbt-github-packages) to publish the package. Set the
-env vars `GITUB_USERNAME`, `GITHUB_PACKAGE_REPO` & `GITHUB_TOKEN` to publish it.
+env vars `GITHUB_USERNAME`, `GITHUB_PACKAGE_REPO` & `GITHUB_TOKEN` to publish it.
 
 ## License
 This project is licensed under the terms of the Apache 2 license, which can be found in the repository as `LICENSE.txt`
